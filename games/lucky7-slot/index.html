@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lucky 7 Jackpot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito:wght@600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="machine">
+    <div class="top">
+      <h1>LUCKY 7</h1>
+      <p class="sub">5 Makara · Wild · Scatter Free Spin</p>
+      <div class="jackpot">Mini Jackpot: <strong id="jackpot">0</strong></div>
+    </div>
+
+    <div class="stage">
+      <div class="reels" id="reels"></div>
+      <div class="win-flash" id="winFlash"></div>
+    </div>
+
+    <div class="payline-hint">5 kazanç hattı · ★ Wild · 💎 Scatter (3+ = 8 Free Spin)</div>
+
+    <div class="hud">
+      <div class="stat"><span>Bakiye</span><strong id="balance">—</strong></div>
+      <div class="stat"><span>Bahis</span><strong id="betLabel">5</strong></div>
+      <div class="stat"><span>Son Kazanç</span><strong id="lastWin">0</strong></div>
+      <div class="stat"><span>Free Spin</span><strong id="freeSpins">0</strong></div>
+    </div>
+
+    <div class="controls">
+      <button id="betDown" type="button">−</button>
+      <button id="spin" type="button" class="spin" disabled>ÇEVİR</button>
+      <button id="betUp" type="button">+</button>
+      <button id="auto" type="button" class="ghost">AUTO</button>
+    </div>
+
+    <div class="msg" id="msg">Cüzdan bağlanıyor...</div>
+  </div>
+  <script src="game.js?v=2"></script>
+</body>
+</html>

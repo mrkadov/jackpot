@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ana Sayfa | Jackpot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="page-wrap">
+    <nav class="menu_head">
+      <div class="container nav-inner">
+        <a class="brand" href="index.html">
+          <span class="brand-cards" aria-hidden="true">🂡🂱🃁🃑</span>
+          <span class="brand-name">Jackpot</span>
+        </a>
+        <button class="nav-toggle" aria-label="Menü">☰</button>
+        <div class="nav-links">
+          <a class="active" href="index.html">Ana Sayfa</a>
+          <a href="about.html">Hakkımızda</a>
+          <a href="promotion.html">Promosyon</a>
+          <a href="games.html">Oyunlar</a>
+          <a href="membership.html">Üyelik</a>
+          <a href="contact.html">İletişim</a>
+        </div>
+        <div class="nav-actions"></div>
+      </div>
+    </nav>
+
+    <section id="banner_part">
+      <div class="container banner-grid">
+        <div class="banner-visual">
+          <div class="hero-stage" aria-hidden="true">
+            <svg viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="wheelGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#ffd56a"/>
+                  <stop offset="100%" stop-color="#9e4efc" stop-opacity="0"/>
+                </radialGradient>
+                <linearGradient id="goldG" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#ffe08a"/>
+                  <stop offset="100%" stop-color="#e07e1e"/>
+                </linearGradient>
+              </defs>
+              <circle cx="260" cy="270" r="180" fill="url(#wheelGlow)" opacity="0.45"/>
+              <!-- roulette -->
+              <circle cx="250" cy="265" r="130" fill="#1a0a2e" stroke="#d4a017" stroke-width="14"/>
+              <g transform="translate(250 265)">
+                <circle r="118" fill="none" stroke="#2a0a40" stroke-width="22"/>
+                <g>
+                  <path d="M0 0 L0 -118 A118 118 0 0 1 83.5 -83.5 Z" fill="#c41e3a"/>
+                  <path d="M0 0 L83.5 -83.5 A118 118 0 0 1 118 0 Z" fill="#111"/>
+                  <path d="M0 0 L118 0 A118 118 0 0 1 83.5 83.5 Z" fill="#c41e3a"/>
+                  <path d="M0 0 L83.5 83.5 A118 118 0 0 1 0 118 Z" fill="#111"/>
+                  <path d="M0 0 L0 118 A118 118 0 0 1 -83.5 83.5 Z" fill="#c41e3a"/>
+                  <path d="M0 0 L-83.5 83.5 A118 118 0 0 1 -118 0 Z" fill="#111"/>
+                  <path d="M0 0 L-118 0 A118 118 0 0 1 -83.5 -83.5 Z" fill="#c41e3a"/>
+                  <path d="M0 0 L-83.5 -83.5 A118 118 0 0 1 0 -118 Z" fill="#111"/>
+                </g>
+                <circle r="36" fill="url(#goldG)"/>
+                <circle r="14" fill="#fff"/>
+              </g>
+              <!-- slot -->
+              <rect x="320" y="70" width="120" height="150" rx="14" fill="#3a1480" stroke="#fcb100" stroke-width="4"/>
+              <rect x="332" y="90" width="96" height="70" rx="8" fill="#0d001c"/>
+              <text x="380" y="140" text-anchor="middle" fill="#fcb100" font-family="Anton, sans-serif" font-size="42">777</text>
+              <rect x="350" y="175" width="60" height="18" rx="6" fill="#9e4efc"/>
+              <!-- cards -->
+              <g transform="translate(70 330) rotate(-18)">
+                <rect width="70" height="100" rx="8" fill="#fff" stroke="#222"/>
+                <text x="35" y="58" text-anchor="middle" font-size="28" fill="#c41e3a">A♥</text>
+              </g>
+              <g transform="translate(110 310) rotate(8)">
+                <rect width="70" height="100" rx="8" fill="#fff" stroke="#222"/>
+                <text x="35" y="58" text-anchor="middle" font-size="28" fill="#111">A♠</text>
+              </g>
+              <!-- dice -->
+              <g transform="translate(380 360) rotate(15)">
+                <rect width="54" height="54" rx="8" fill="#e74c3c"/>
+                <circle cx="16" cy="16" r="5" fill="#fff"/>
+                <circle cx="38" cy="38" r="5" fill="#fff"/>
+                <circle cx="27" cy="27" r="5" fill="#fff"/>
+              </g>
+              <g transform="translate(430 390) rotate(-20)">
+                <rect width="48" height="48" rx="8" fill="#fff" stroke="#ccc"/>
+                <circle cx="14" cy="14" r="4" fill="#222"/>
+                <circle cx="34" cy="34" r="4" fill="#222"/>
+              </g>
+              <!-- chips -->
+              <circle cx="90" cy="180" r="28" fill="#1e90ff" stroke="#fff" stroke-width="4" stroke-dasharray="6 5"/>
+              <circle cx="140" cy="120" r="22" fill="#222" stroke="#fcb100" stroke-width="4" stroke-dasharray="5 4"/>
+              <circle cx="430" cy="240" r="24" fill="#c41e3a" stroke="#fff" stroke-width="4" stroke-dasharray="5 4"/>
+              <!-- coins -->
+              <circle cx="360" cy="210" r="14" fill="url(#goldG)"/>
+              <circle cx="390" cy="230" r="12" fill="url(#goldG)"/>
+              <circle cx="340" cy="235" r="10" fill="url(#goldG)"/>
+              <!-- bills -->
+              <rect x="40" y="220" width="70" height="34" rx="4" fill="#2ecc71" transform="rotate(-25 75 237)"/>
+              <rect x="430" y="120" width="70" height="34" rx="4" fill="#27ae60" transform="rotate(20 465 137)"/>
+            </svg>
+          </div>
+        </div>
+        <div class="banner_text">
+          <h4>Günün Jackpot’u</h4>
+          <h1>777</h1>
+          <p>Makaraları çevir, altını kovala ve gecenin büyük ödülünü kap. Yeni drop’lar, canlı masalar ve kesintisiz aksiyon seni bekliyor.</p>
+          <div>
+            <a class="btn btn-lg" href="games.html">Hemen Oyna</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="game_part">
+      <div class="container">
+        <div class="game_flow">
+          <div class="game_text">
+            <h2>01</h2>
+            <h3>Kayıt Ol</h3>
+            <p>Saniyeler içinde ücretsiz hesap aç, hoş geldin ödüllerini aç.</p>
+          </div>
+          <div class="game_text">
+            <h2>02</h2>
+            <h3>Hazırlan</h3>
+            <p>Bakiye yükle ve favori masanı veya slotunu seç.</p>
+          </div>
+          <div class="game_text">
+            <h2>03</h2>
+            <h3>Keyfini Çıkar</h3>
+            <p>Daha büyük oyna, daha parlak kazan, gecenin tadını çıkar.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="casino_games">
+      <div class="container">
+        <h2 class="section-title reveal">Casino Oyunları</h2>
+        <div id="homeGames" class="games-grid">
+          <p style="grid-column:1/-1;text-align:center;color:var(--text-muted)">Oyunlar yükleniyor...</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="claim_part">
+      <div class="container claim-grid">
+        <div class="claim-visual reveal">
+          <svg class="spin-art" viewBox="0 0 360 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="spinGold" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ffe08a"/>
+                <stop offset="100%" stop-color="#e07e1e"/>
+              </linearGradient>
+            </defs>
+            <ellipse cx="180" cy="390" rx="110" ry="18" fill="#000" opacity="0.35"/>
+            <rect x="95" y="70" width="170" height="280" rx="28" fill="#2a0a55" stroke="url(#spinGold)" stroke-width="6"/>
+            <circle cx="180" cy="180" r="88" fill="#12002e" stroke="#fcb100" stroke-width="8"/>
+            <path d="M180 100 L200 165 L270 165 L214 205 L234 270 L180 230 L126 270 L146 205 L90 165 L160 165 Z" fill="url(#spinGold)"/>
+            <rect x="120" y="290" width="120" height="36" rx="10" fill="#9e4efc"/>
+            <text x="180" y="314" text-anchor="middle" fill="#fff" font-family="Anton, sans-serif" font-size="18">BEDAVA</text>
+            <circle cx="70" cy="140" r="18" fill="url(#spinGold)"/>
+            <circle cx="300" cy="220" r="14" fill="url(#spinGold)"/>
+            <circle cx="60" cy="250" r="12" fill="#9e4efc"/>
+          </svg>
+        </div>
+        <div class="claim_text reveal">
+          <h2>Bedava Spin Aç</h2>
+          <p>Yeni oyuncular seçili jackpot slotlarında bedava spin paketi alır. Bonusunu aktifleştir, öne çıkan oyunu seç ve süre dolmadan ödül havuzunu kovala.</p>
+          <a class="btn btn-lg" href="promotion.html">Hemen Talep Et</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing_part">
+      <div class="container">
+        <h2 class="section-title reveal">Üyelik Planları</h2>
+        <div class="pricing-grid">
+          <div class="pricing_inner reveal">
+            <div class="pricing_inner_head"><h2>Öne Çıkan</h2></div>
+            <h3>Deneme Planı</h3>
+            <h4>0.00</h4>
+            <p>TRY / Aylık</p>
+            <ul>
+              <li>Temel oyun erişimi</li>
+              <li>10 oyuncuya kadar</li>
+              <li>Skor ortalaması</li>
+              <li>Sonuç çıktısı</li>
+              <li class="na">VIP Destek</li>
+              <li class="na">Özel Masalar</li>
+            </ul>
+            <a class="btn" href="membership.html">Seç</a>
+          </div>
+          <div class="pricing_inner featured reveal">
+            <div class="pricing_inner_head"><h2>Öne Çıkan</h2></div>
+            <h3>Standart Plan</h3>
+            <h4>9.99</h4>
+            <p>TRY / Aylık</p>
+            <ul>
+              <li>Temel oyun erişimi</li>
+              <li>25 oyuncuya kadar</li>
+              <li>Skor ortalaması</li>
+              <li>Sonuç çıktısı</li>
+              <li>VIP Destek</li>
+              <li class="na">Özel Masalar</li>
+            </ul>
+            <a class="btn" href="membership.html">Seç</a>
+          </div>
+          <div class="pricing_inner reveal">
+            <div class="pricing_inner_head"><h2>Öne Çıkan</h2></div>
+            <h3>Platinum Plan</h3>
+            <h4>99.99</h4>
+            <p>TRY / Aylık</p>
+            <ul>
+              <li>Temel oyun erişimi</li>
+              <li>Sınırsız oyuncu</li>
+              <li>Skor ortalaması</li>
+              <li>Sonuç çıktısı</li>
+              <li>VIP Destek</li>
+              <li>Özel Masalar</li>
+            </ul>
+            <a class="btn" href="membership.html">Seç</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq_part">
+      <div class="container faq-grid">
+        <div class="reveal">
+          <h3 class="faq-title">Sıkça Sorulan Sorular</h3>
+          <div class="accordion">
+            <div class="item">
+              <button type="button"><span><span class="num">01.</span> Yeni başlayanlar nasıl oynar?</span><span>▾</span></button>
+              <div class="panel open">
+                <p>Kayıt olun, hesabınızı doğrulayın, hoş geldin paketini alın ve Oyunlar’dan düşük bakiyeli masalarla başlayın.</p>
+              </div>
+            </div>
+            <div class="item">
+              <button type="button"><span><span class="num">02.</span> Yatırım ve çekim nasıl çalışır?</span><span>▾</span></button>
+              <div class="panel">
+                <p>Kasa’dan talep oluşturursunuz. Admin onayladıktan sonra bakiyeniz güncellenir. Desteklenen yöntemler: Havale, Papara, Kripto.</p>
+              </div>
+            </div>
+            <div class="item">
+              <button type="button"><span><span class="num">03.</span> Hangi bonusları açabilirim?</span><span>▾</span></button>
+              <div class="panel">
+                <p>Bedava spin, reload teklifleri ve üyelik seviyesi ödülleri haftalık döner. Güncel kampanyalar için Promosyon sayfasına bakın.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <aside class="faq-aside reveal">
+          <h3>Yardım Lazım mı?</h3>
+          <p>Destek ekibimiz hesap, bonus ve ödeme sorularında 7/24 yanınızda.</p>
+          <a class="btn" href="contact.html">Destekle İletişim</a>
+        </aside>
+      </div>
+    </section>
+
+    <section id="payment_part">
+      <div class="container pay-grid">
+        <div class="reveal">
+          <h3>Tekliflere Abone Ol</h3>
+          <form class="pay_form" action="#">
+            <input type="email" placeholder="E-posta adresiniz" required />
+            <button class="pay_butt" type="submit" aria-label="Abone ol">✈</button>
+          </form>
+        </div>
+        <div class="reveal">
+          <h3>Ödeme Yöntemleri</h3>
+          <div class="pay-methods">
+            <span class="pay-chip">Havale</span>
+            <span class="pay-chip">Papara</span>
+            <span class="pay-chip">USDT</span>
+            <span class="pay-chip">BTC</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer id="footer_part">
+      <div class="container footer-grid">
+        <div>
+          <h3>Jackpot Hakkında</h3>
+          <p>Jackpot; slot, masa oyunları ve turnuvalar için neon casino deneyimi sunar — büyük geceler ve daha büyük kazançlar için.</p>
+          <div class="socials">
+            <a href="#" aria-label="Facebook">f</a>
+            <a href="#" aria-label="LinkedIn">in</a>
+            <a href="#" aria-label="Google">G+</a>
+            <a href="#" aria-label="Pinterest">P</a>
+          </div>
+        </div>
+        <div>
+          <h3>Önemli Linkler</h3>
+          <div class="foot-links">
+            <a href="games.html">Oyunlar</a>
+            <a href="about.html">Nasıl Oynanır</a>
+            <a href="promotion.html">Turnuvalar</a>
+            <a href="membership.html">Kayıt Bonusu</a>
+            <a href="contact.html">İletişim</a>
+            <a href="kasa.html">Kasa</a>
+            <a href="index.html#faq_part">SSS</a>
+            <a href="admin/index.html">Admin</a>
+          </div>
+        </div>
+        <div>
+          <h3>Güvenlik</h3>
+          <div class="secu-row">
+            <div class="secu-icon">🔒</div>
+            <p>Güvenli <span>Banka Altyapısı</span></p>
+          </div>
+          <div class="secu-row">
+            <div class="secu-icon">👥</div>
+            <p>Toplam 203 Milyon <span>Kayıtlı Kullanıcı</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="container copyright">© 2026 Jackpot. Tüm hakları saklıdır.</div>
+    </footer>
+  </div>
+
+  <div id="trustBar" class="trust-bar container"></div>
+  <button class="to-top" aria-label="Yukarı">↑</button>
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/trust.js"></script>
+  <script src="js/livechat.js"></script>
+  <script>
+    (async function () {
+      const box = document.getElementById("homeGames");
+      if (!box) return;
+      try {
+        const { games } = await JackpotAPI.api("/games");
+        const list = games.slice(0, 4);
+        if (!list.length) {
+          box.innerHTML = "<p style='grid-column:1/-1;text-align:center'>Henüz oyun yok</p>";
+          return;
+        }
+        const icons = { Slot: "🎰", Rulet: "🎡", Poker: "🃏", default: "🎮" };
+        box.innerHTML = list
+          .map(
+            (g) => `<a class="game-card reveal visible" href="oyna.html?id=${g.id}">
+              <div class="art">${icons[g.category] || icons.default}</div>
+              <div class="meta"><h3>${g.name}</h3><span>${g.provider?.name || ""} · ${g.category}</span></div>
+            </a>`
+          )
+          .join("");
+      } catch {
+        box.innerHTML = "<p style='grid-column:1/-1;text-align:center'><a class='btn' href='games.html'>Oyunları Gör</a></p>";
+      }
+    })();
+  </script>
+</body>
+</html>

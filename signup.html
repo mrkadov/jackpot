@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kayıt Ol | Jackpot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="page-wrap">
+    <nav class="menu_head">
+      <div class="container nav-inner">
+        <a class="brand" href="index.html">
+          <span class="brand-cards" aria-hidden="true">🂡🂱🃁🃑</span>
+          <span class="brand-name">Jackpot</span>
+        </a>
+        <button class="nav-toggle" aria-label="Menü">☰</button>
+        <div class="nav-links">
+          <a href="index.html">Ana Sayfa</a>
+          <a href="games.html">Oyunlar</a>
+          <a href="contact.html">İletişim</a>
+        </div>
+        <div class="nav-actions"></div>
+      </div>
+    </nav>
+
+    <header class="page-hero">
+      <div class="container">
+        <h1>Üyelik Başvurusu</h1>
+        <p>Kimlik ve adres bilgilerinizi eksiksiz doldurun. 18 yaş altı kayıt kabul edilmez.</p>
+      </div>
+    </header>
+
+    <section class="content-section">
+      <div class="container">
+        <form id="signupForm" class="card-panel signup-box" novalidate>
+          <div class="form-section">
+            <h3>1. Kişisel Bilgiler</h3>
+            <div class="form-grid">
+              <div class="field">
+                <label for="firstName">Ad *</label>
+                <input id="firstName" name="firstName" type="text" required autocomplete="given-name" placeholder="Adınız" />
+              </div>
+              <div class="field">
+                <label for="lastName">Soyad *</label>
+                <input id="lastName" name="lastName" type="text" required autocomplete="family-name" placeholder="Soyadınız" />
+              </div>
+              <div class="field">
+                <label for="tcKimlik">TC Kimlik No *</label>
+                <input id="tcKimlik" name="tcKimlik" type="text" inputmode="numeric" maxlength="11" required placeholder="11 haneli TC" />
+              </div>
+              <div class="field">
+                <label for="birthDate">Doğum Tarihi *</label>
+                <input id="birthDate" name="birthDate" type="date" required />
+              </div>
+              <div class="field">
+                <label for="gender">Cinsiyet *</label>
+                <select id="gender" name="gender" required>
+                  <option value="">Seçiniz</option>
+                  <option>Erkek</option>
+                  <option>Kadın</option>
+                  <option>Belirtmek istemiyorum</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="phone">Cep Telefonu *</label>
+                <input id="phone" name="phone" type="tel" required placeholder="05xxxxxxxxx" autocomplete="tel" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>2. Hesap Bilgileri</h3>
+            <div class="form-grid">
+              <div class="field">
+                <label for="email">E-posta *</label>
+                <input id="email" name="email" type="email" required placeholder="ornek@mail.com" autocomplete="email" />
+              </div>
+              <div class="field">
+                <label for="password">Şifre *</label>
+                <input id="password" name="password" type="password" required minlength="6" placeholder="En az 6 karakter" autocomplete="new-password" />
+              </div>
+              <div class="field">
+                <label for="passwordConfirm">Şifre Tekrar *</label>
+                <input id="passwordConfirm" name="passwordConfirm" type="password" required minlength="6" placeholder="Şifreyi tekrar girin" autocomplete="new-password" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>3. Adres Bilgileri</h3>
+            <div class="form-grid">
+              <div class="field">
+                <label for="city">İl *</label>
+                <select id="city" name="city" required>
+                  <option value="">İl seçiniz</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="district">İlçe *</label>
+                <select id="district" name="district" required disabled>
+                  <option value="">Önce il seçiniz</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="postalCode">Posta Kodu</label>
+                <input id="postalCode" name="postalCode" type="text" maxlength="5" inputmode="numeric" placeholder="Örn: 34000" />
+              </div>
+              <div class="field field-full">
+                <label for="address">Açık Adres *</label>
+                <textarea id="address" name="address" rows="3" required placeholder="Mahalle, sokak, bina no, daire no"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section terms">
+            <label class="check-line">
+              <input type="checkbox" id="acceptTerms" required />
+              <span>18 yaşından büyüğüm. Üyelik sözleşmesi, gizlilik politikası ve sorumlu oyun kurallarını okudum, kabul ediyorum.</span>
+            </label>
+          </div>
+
+          <button class="btn btn-lg" type="submit" style="width:100%">Üyeliği Tamamla</button>
+          <p id="formError"></p>
+          <p style="margin-top:1rem;text-align:center;color:var(--text-muted)">
+            Zaten üye misin? <a href="login.html" style="color:var(--gold)">Giriş Yap</a>
+          </p>
+        </form>
+      </div>
+    </section>
+  </div>
+  <script src="js/api.js"></script>
+  <script src="js/turkey-locations.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/auth-pages.js"></script>
+</body>
+</html>

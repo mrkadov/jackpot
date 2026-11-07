@@ -1,0 +1,26 @@
+# Render Blueprint — https://dashboard.render.com → New → Blueprint
+# Not: SQLite için Disk şart; disk yoksa restart'ta veriler silinir.
+services:
+  - type: web
+    name: jackpot
+    runtime: node
+    plan: starter
+    rootDir: server
+    buildCommand: npm install && npx prisma generate
+    startCommand: npm run start:prod
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        value: file:/var/data/jackpot.db
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+    disk:
+      name: jackpot-data
+      mountPath: /var/data
+      sizeGB: 1

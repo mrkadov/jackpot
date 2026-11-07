@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KYC Doğrulama | Jackpot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="page-wrap">
+    <nav class="menu_head">
+      <div class="container nav-inner">
+        <a class="brand" href="index.html"><span class="brand-cards">🂡🂱🃁🃑</span><span class="brand-name">Jackpot</span></a>
+        <div class="nav-links">
+          <a href="hesabim.html">Hesabım</a>
+          <a href="kasa.html">Kasa</a>
+          <a class="active" href="kyc.html">KYC</a>
+        </div>
+        <div class="nav-actions"></div>
+      </div>
+    </nav>
+    <header class="page-hero">
+      <div class="container">
+        <h1>Kimlik Doğrulama (KYC)</h1>
+        <p>AML uyumu için kimlik ve adres belgesi yükleyin. Yüksek çekimler için zorunludur.</p>
+      </div>
+    </header>
+    <section class="content-section">
+      <div class="container kasa-grid">
+        <form id="kycForm" class="card-panel">
+          <h3 style="color:var(--gold);margin-bottom:1rem">Belge Yükle</h3>
+          <p id="kycStatusLine" style="margin-bottom:1rem;color:var(--text-muted)"></p>
+          <label>Belge Tipi</label>
+          <select id="docType" required>
+            <option value="ID_FRONT">Kimlik Ön Yüz</option>
+            <option value="ID_BACK">Kimlik Arka Yüz</option>
+            <option value="SELFIE">Selfie + Kimlik</option>
+            <option value="ADDRESS">İkametgah / Fatura</option>
+          </select>
+          <label style="margin-top:0.75rem;display:block">Dosya (görsel)</label>
+          <input id="docFile" type="file" accept="image/*" required />
+          <button class="btn" type="submit" style="margin-top:1rem">Yükle</button>
+          <p id="kycMsg" class="form-msg"></p>
+        </form>
+        <div class="card-panel">
+          <h3 style="color:var(--gold);margin-bottom:1rem">Yüklenen Belgeler</h3>
+          <div class="table-wrap"><table id="kycDocs"></table></div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/livechat.js"></script>
+  <script>
+    (async function () {
+      if (!JackpotAPI.requireAuthPage()) return;
+      async function refresh() {
+        const data = await JackpotAPI.api("/player/kyc");
+        document.getElementById("kycStatusLine").textContent = "KYC Durumu: " + data.kycStatus;
+        document.getElementById("kycDocs").innerHTML = `
+          <thead><tr><th>Tip</th><th>Dosya</th><th>Durum</th><th>Tarih</th></tr></thead>
+          <tbody>${data.docs.map(d => `<tr><td>${d.docType}</td><td>${d.fileName}</td><td>${d.status}</td><td>${new Date(d.createdAt).toLocaleString("tr-TR")}</td></tr>`).join("") || "<tr><td colspan='4'>Belge yok</td></tr>"}</tbody>`;
+      }
+      document.getElementById("kycForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const file = document.getElementById("docFile").files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = async () => {
+          try {
+            await JackpotAPI.api("/player/kyc", {
+              method: "POST",
+              body: JSON.stringify({
+                docType: document.getElementById("docType").value,
+                fileName: file.name,
+                fileData: reader.result,
+              }),
+            });
+            document.getElementById("kycMsg").textContent = "Belge yüklendi, inceleme bekleniyor.";
+            e.target.reset();
+            await refresh();
+          } catch (ex) {
+            document.getElementById("kycMsg").textContent = ex.message;
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+      await refresh();
+    })();
+  </script>
+</body>
+</html>

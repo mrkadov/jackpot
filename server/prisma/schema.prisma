@@ -1,0 +1,247 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String            @id @default(cuid())
+  email              String            @unique
+  passwordHash       String
+  name               String
+  firstName          String            @default("")
+  lastName           String            @default("")
+  tcKimlik           String?           @unique
+  birthDate          String?
+  phone              String?
+  gender             String?
+  address            String?
+  city               String?
+  district           String?
+  postalCode         String?
+  role               String            @default("USER")
+  status             String            @default("ACTIVE")
+  vipLevel           String            @default("BRONZE")
+  riskScore          Int               @default(0)
+  riskFlags          String            @default("[]")
+  tags               String            @default("[]")
+  kycStatus          String            @default("NONE")
+  depositLimitDaily  Float?
+  lossLimitDaily     Float?
+  lastIp             String?
+  deviceFingerprint  String?
+  affiliateCode      String?           @unique
+  referredBy         String?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  wallet             Wallet?
+  transactions       Transaction[]
+  sessions           GameSession[]
+  payments           PaymentRequest[]
+  kycDocuments       KycDocument[]
+  bonuses            UserBonus[]
+  supportTickets     SupportTicket[]
+  riskAlerts         RiskAlert[]
+  affiliateAsPartner Affiliate?
+}
+
+model Wallet {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  balance      Float    @default(0)
+  bonusBalance Float    @default(0)
+  withdrawable Float    @default(0)
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Transaction {
+  id           String   @id @default(cuid())
+  userId       String
+  type         String
+  amount       Float
+  balanceAfter Float
+  note         String?
+  createdAt    DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model GameProvider {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  games     Game[]
+}
+
+model Game {
+  id         String        @id @default(cuid())
+  providerId String
+  name       String
+  category   String        @default("Slot")
+  tags       String        @default("[]")
+  thumbnail  String?
+  launchUrl  String
+  rtp        Float         @default(96)
+  featured   Boolean       @default(false)
+  popular    Boolean       @default(false)
+  active     Boolean       @default(true)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  provider   GameProvider  @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  sessions   GameSession[]
+}
+
+model GameSession {
+  id        String   @id @default(cuid())
+  userId    String
+  gameId    String
+  startedAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+}
+
+model PaymentRequest {
+  id         String   @id @default(cuid())
+  userId     String
+  type       String
+  amount     Float
+  method     String
+  note       String?
+  status     String   @default("PENDING")
+  riskScore  Int      @default(0)
+  autoReview Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PaymentMethod {
+  id        String  @id @default(cuid())
+  code      String  @unique
+  name      String
+  type      String
+  active    Boolean @default(true)
+  minAmount Float   @default(50)
+  maxAmount Float   @default(100000)
+  feePercent Float  @default(0)
+  regions   String  @default("[\"TR\"]")
+}
+
+model KycDocument {
+  id         String   @id @default(cuid())
+  userId     String
+  docType    String
+  fileName   String
+  fileData   String
+  status     String   @default("PENDING")
+  reviewNote String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model BonusTemplate {
+  id              String      @id @default(cuid())
+  name            String
+  type            String
+  amount          Float
+  percent         Float       @default(0)
+  wagerMultiplier Float       @default(20)
+  eligibleGames   String      @default("[\"Slot\"]")
+  active          Boolean     @default(true)
+  autoTrigger     String?
+  createdAt       DateTime    @default(now())
+  grants          UserBonus[]
+}
+
+model UserBonus {
+  id             String        @id @default(cuid())
+  userId         String
+  templateId     String?
+  name           String
+  type           String
+  amount         Float
+  wagerRequired  Float         @default(0)
+  wagerProgress  Float         @default(0)
+  status         String        @default("ACTIVE")
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  template       BonusTemplate? @relation(fields: [templateId], references: [id])
+}
+
+model Affiliate {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  code           String   @unique
+  commissionType String   @default("RevShare")
+  rate           Float    @default(25)
+  clicks         Int      @default(0)
+  signups        Int      @default(0)
+  earnings       Float    @default(0)
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model SupportTicket {
+  id        String           @id @default(cuid())
+  userId    String
+  subject   String
+  category  String           @default("GENEL")
+  status    String           @default("OPEN")
+  vipOnly   Boolean          @default(false)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  SupportMessage[]
+}
+
+model SupportMessage {
+  id        String        @id @default(cuid())
+  ticketId  String
+  sender    String
+  body      String
+  createdAt DateTime      @default(now())
+  ticket    SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+}
+
+model CannedReply {
+  id        String   @id @default(cuid())
+  title     String
+  category  String   @default("GENEL")
+  body      String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model RiskAlert {
+  id        String   @id @default(cuid())
+  userId    String?
+  type      String
+  severity  String   @default("MEDIUM")
+  message   String
+  resolved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model PlatformSetting {
+  id    String @id @default("main")
+  data  String @default("{}")
+}
+
+model PlayerGameState {
+  id        String   @id @default(cuid())
+  userId    String
+  gameKey   String
+  freeSpins Int      @default(0)
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@unique([userId, gameKey])
+}

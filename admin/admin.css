@@ -1,0 +1,145 @@
+:root {
+  --bg: #0b0418;
+  --panel: #16082e;
+  --line: rgba(158, 78, 252, 0.35);
+  --gold: #fcb100;
+  --purple: #9e4efc;
+  --text: #fff;
+  --muted: rgba(255, 255, 255, 0.7);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Nunito, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+.hidden { display: none !important; }
+.gate {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1.25rem;
+  width: min(100%, 420px);
+  display: grid;
+  gap: 0.6rem;
+}
+.card.inline {
+  width: 100%;
+  margin-top: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  align-items: end;
+}
+.card h1, .card h3 { color: var(--gold); margin-bottom: 0.4rem; grid-column: 1 / -1; }
+label { font-size: 0.85rem; color: var(--muted); }
+input, select, button {
+  font: inherit;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  padding: 0.7rem 0.85rem;
+  background: #0a0218;
+  color: #fff;
+}
+button {
+  background: linear-gradient(180deg, #9e4efc, #570dc8);
+  border: none;
+  cursor: pointer;
+  font-weight: 800;
+}
+button.ghost {
+  background: transparent;
+  border: 1px solid var(--line);
+}
+.error { color: #ff6b8a; min-height: 1.2em; }
+.app { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+.sidebar {
+  background: #090214;
+  border-right: 1px solid var(--line);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.sidebar h2 { color: var(--gold); margin-bottom: 1rem; }
+.sidebar nav { display: grid; gap: 0.4rem; flex: 1; }
+.sidebar nav button {
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+}
+.sidebar nav button.active,
+.sidebar nav button:hover {
+  border-color: var(--line);
+  background: rgba(158, 78, 252, 0.15);
+}
+main { padding: 1.5rem; }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem;
+}
+.stat strong { display: block; font-size: 1.6rem; color: var(--gold); }
+.table-wrap { overflow: auto; margin-top: 1rem; }
+table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+th, td { border-bottom: 1px solid rgba(255,255,255,0.08); padding: 0.65rem 0.4rem; text-align: left; }
+th { color: var(--gold); }
+.actions { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+.actions button { padding: 0.4rem 0.65rem; font-size: 0.8rem; }
+.badge { padding: 0.15rem 0.45rem; border-radius: 999px; font-size: 0.75rem; background: #333; }
+.badge.PENDING { background: #7a5200; }
+.badge.APPROVED { background: #0f6b3a; }
+.badge.REJECTED { background: #7a1f35; }
+.card.wide { width: 100%; max-width: none; }
+.filters { display: flex; gap: 0.5rem; margin: 0.75rem 0; flex-wrap: wrap; }
+.chip {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.chip.active { background: rgba(158,78,252,0.25); border-color: var(--purple); }
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.65rem;
+  min-height: 150px;
+  padding-top: 0.5rem;
+}
+.bar-col { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; flex: 1; }
+.bar {
+  width: 100%;
+  max-width: 42px;
+  background: linear-gradient(180deg, #9e4efc, #570dc8);
+  border-radius: 8px 8px 4px 4px;
+}
+.check { display: flex; align-items: center; gap: 0.4rem; color: var(--muted); }
+.thread { max-height: 280px; overflow: auto; margin: 0.75rem 0; }
+.thread p { padding: 0.35rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.canned-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.5rem 0; }
+#cannedForm textarea, #replyBody {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #0a0218;
+  color: #fff;
+  padding: 0.7rem;
+  font: inherit;
+}
+@media (max-width: 860px) {
+  .app { grid-template-columns: 1fr; }
+}

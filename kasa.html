@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kasa | Jackpot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="page-wrap">
+    <nav class="menu_head">
+      <div class="container nav-inner">
+        <a class="brand" href="index.html">
+          <span class="brand-cards" aria-hidden="true">🂡🂱🃁🃑</span>
+          <span class="brand-name">Jackpot</span>
+        </a>
+        <button class="nav-toggle" aria-label="Menü">☰</button>
+        <div class="nav-links">
+          <a href="index.html">Ana Sayfa</a>
+          <a href="about.html">Hakkımızda</a>
+          <a href="promotion.html">Promosyon</a>
+          <a href="games.html">Oyunlar</a>
+          <a href="membership.html">Üyelik</a>
+          <a href="contact.html">İletişim</a>
+        </div>
+        <div class="nav-actions"></div>
+      </div>
+    </nav>
+
+    <header class="page-hero">
+      <div class="container">
+        <h1>Kasa</h1>
+        <p>Manuel yatırım ve çekim talepleri — onay sonrası bakiye güncellenir</p>
+      </div>
+    </header>
+
+    <section class="content-section">
+      <div class="container kasa-grid">
+        <form id="depositForm" class="card-panel">
+          <h3 style="color:var(--gold);margin-bottom:1rem">Yatırım Talebi</h3>
+          <label>Tutar (₺)</label>
+          <input type="number" id="depAmount" min="1" step="0.01" required placeholder="Örn: 500" />
+          <label>Yöntem</label>
+          <select id="depMethod" required></select>
+          <label>Not / Referans</label>
+          <input type="text" id="depNote" placeholder="Dekont no veya cüzdan adresi" />
+          <button class="btn" type="submit" style="margin-top:0.75rem">Talep Oluştur</button>
+          <p id="depMsg" class="form-msg"></p>
+        </form>
+
+        <form id="withdrawForm" class="card-panel">
+          <h3 style="color:var(--gold);margin-bottom:1rem">Çekim Talebi</h3>
+          <label>Tutar (₺)</label>
+          <input type="number" id="wdAmount" min="1" step="0.01" required placeholder="Örn: 200" />
+          <label>Yöntem</label>
+          <select id="wdMethod" required></select>
+          <label>Hesap bilgisi</label>
+          <input type="text" id="wdNote" placeholder="IBAN / Papara no" required />
+          <button class="btn" type="submit" style="margin-top:0.75rem">Çekim İste</button>
+          <p id="wdMsg" class="form-msg"></p>
+        </form>
+      </div>
+
+      <div class="container" style="margin-top:2rem">
+        <div class="card-panel">
+          <h3 style="color:var(--gold);margin-bottom:1rem">Taleplerim</h3>
+          <div class="table-wrap"><table id="payTable"></table></div>
+        </div>
+      </div>
+    </section>
+
+    <footer id="footer_part">
+      <div class="container copyright">© 2026 Jackpot. Tüm hakları saklıdır.</div>
+    </footer>
+  </div>
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/livechat.js"></script>
+  <script>
+    (async function () {
+      if (!JackpotAPI.requireAuthPage()) return;
+      const { api, money } = JackpotAPI;
+
+      try {
+        const { methods } = await api("/payments/methods");
+        const opts = methods.map((m) => `<option value="${m.name}">${m.name} (${m.minAmount}-${m.maxAmount} ₺)</option>`).join("");
+        document.getElementById("depMethod").innerHTML = opts;
+        document.getElementById("wdMethod").innerHTML = opts;
+      } catch (_) {
+        const fallback = ["Havale/EFT","Papara","USDT (TRC20)"].map((n)=>`<option>${n}</option>`).join("");
+        document.getElementById("depMethod").innerHTML = fallback;
+        document.getElementById("wdMethod").innerHTML = fallback;
+      }
+
+      async function loadPayments() {
+        const { payments } = await api("/payments/mine");
+        const st = { PENDING: "Bekliyor", APPROVED: "Onaylandı", REJECTED: "Reddedildi" };
+        document.getElementById("payTable").innerHTML = `
+          <thead><tr><th>Tip</th><th>Tutar</th><th>Yöntem</th><th>Durum</th><th>Tarih</th></tr></thead>
+          <tbody>${
+            payments.length
+              ? payments
+                  .map(
+                    (p) => `<tr>
+                    <td>${p.type === "DEPOSIT" ? "Yatırım" : "Çekim"}</td>
+                    <td>${money(p.amount)}</td>
+                    <td>${p.method}</td>
+                    <td>${st[p.status] || p.status}</td>
+                    <td>${new Date(p.createdAt).toLocaleString("tr-TR")}</td>
+                  </tr>`
+                  )
+                  .join("")
+              : "<tr><td colspan='5'>Talep yok</td></tr>"
+          }</tbody>`;
+      }
+
+      document.getElementById("depositForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const msg = document.getElementById("depMsg");
+        msg.textContent = "";
+        try {
+          await api("/payments/deposit", {
+            method: "POST",
+            body: JSON.stringify({
+              amount: Number(document.getElementById("depAmount").value),
+              method: document.getElementById("depMethod").value,
+              note: document.getElementById("depNote").value,
+            }),
+          });
+          msg.textContent = "Yatırım talebi oluşturuldu. Admin onayından sonra bakiyenize yansır.";
+          e.target.reset();
+          await loadPayments();
+        } catch (ex) {
+          msg.textContent = ex.message;
+        }
+      });
+
+      document.getElementById("withdrawForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const msg = document.getElementById("wdMsg");
+        msg.textContent = "";
+        try {
+          await api("/payments/withdraw", {
+            method: "POST",
+            body: JSON.stringify({
+              amount: Number(document.getElementById("wdAmount").value),
+              method: document.getElementById("wdMethod").value,
+              note: document.getElementById("wdNote").value,
+            }),
+          });
+          msg.textContent = "Çekim talebi oluşturuldu.";
+          e.target.reset();
+          await loadPayments();
+        } catch (ex) {
+          msg.textContent = ex.message;
+        }
+      });
+
+      await loadPayments();
+    })();
+  </script>
+</body>
+</html>

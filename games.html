@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oyunlar | Jackpot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="page-wrap">
+    <nav class="menu_head">
+      <div class="container nav-inner">
+        <a class="brand" href="index.html"><span class="brand-cards">🂡🂱🃁🃑</span><span class="brand-name">Jackpot</span></a>
+        <button class="nav-toggle" aria-label="Menü">☰</button>
+        <div class="nav-links">
+          <a href="index.html">Ana Sayfa</a>
+          <a href="about.html">Hakkımızda</a>
+          <a href="promotion.html">Promosyon</a>
+          <a class="active" href="games.html">Oyunlar</a>
+          <a href="membership.html">Üyelik</a>
+          <a href="contact.html">İletişim</a>
+        </div>
+        <div class="nav-actions"></div>
+      </div>
+    </nav>
+
+    <header class="page-hero">
+      <div class="container">
+        <h1>Oyun Lobisi</h1>
+        <p>Slot, Canlı Casino ve Crash oyunlarını sağlayıcıya göre filtreleyin.</p>
+      </div>
+    </header>
+
+    <section class="content-section">
+      <div class="container">
+        <div class="lobby-filters card-panel">
+          <input id="q" placeholder="Oyun ara..." />
+          <select id="category"><option value="">Tüm Kategoriler</option></select>
+          <select id="provider"><option value="">Tüm Sağlayıcılar</option></select>
+          <label class="check-inline"><input type="checkbox" id="popular" /> Popüler</label>
+          <label class="check-inline"><input type="checkbox" id="featured" /> Öne çıkan</label>
+          <button class="btn" id="filterBtn" type="button">Filtrele</button>
+        </div>
+        <div id="gamesGrid" class="games-grid" style="margin-top:1.25rem">
+          <p style="grid-column:1/-1;text-align:center;color:var(--text-muted)">Oyunlar yükleniyor...</p>
+        </div>
+      </div>
+    </section>
+
+    <div id="trustBar" class="trust-bar container"></div>
+    <footer id="footer_part"><div class="container copyright">© 2026 Jackpot · Lisanslı demo altyapı</div></footer>
+  </div>
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/trust.js"></script>
+  <script src="js/livechat.js"></script>
+  <script>
+    const icons = { Slot: "🎰", "Canlı Casino": "🃏", Crash: "🚀", Rulet: "🎡", Poker: "♠️", default: "🎮" };
+    async function loadGames() {
+      const params = new URLSearchParams();
+      const q = document.getElementById("q").value.trim();
+      const category = document.getElementById("category").value;
+      const provider = document.getElementById("provider").value;
+      if (q) params.set("q", q);
+      if (category) params.set("category", category);
+      if (provider) params.set("provider", provider);
+      if (document.getElementById("popular").checked) params.set("popular", "1");
+      if (document.getElementById("featured").checked) params.set("featured", "1");
+      const data = await JackpotAPI.api("/games?" + params.toString());
+      const cat = document.getElementById("category");
+      const prov = document.getElementById("provider");
+      if (cat.options.length <= 1) {
+        data.categories.forEach((c) => cat.insertAdjacentHTML("beforeend", `<option value="${c}">${c}</option>`));
+      }
+      if (prov.options.length <= 1) {
+        data.providers.forEach((p) => prov.insertAdjacentHTML("beforeend", `<option value="${p.name}">${p.name}</option>`));
+      }
+      const grid = document.getElementById("gamesGrid");
+      if (!data.games.length) {
+        grid.innerHTML = "<p style='grid-column:1/-1;text-align:center'>Sonuç bulunamadı</p>";
+        return;
+      }
+      grid.innerHTML = data.games.map((g) => `
+        <a class="game-card reveal visible" href="oyna.html?id=${g.id}">
+          <div class="art">${icons[g.category] || icons.default}</div>
+          <div class="meta">
+            <h3>${g.name}</h3>
+            <span>${g.provider?.name || ""} · ${g.category}${g.popular ? " · Popüler" : ""}</span>
+          </div>
+        </a>`).join("");
+    }
+    document.getElementById("filterBtn").onclick = loadGames;
+    document.getElementById("q").addEventListener("keydown", (e) => { if (e.key === "Enter") loadGames(); });
+    loadGames().catch((ex) => {
+      document.getElementById("gamesGrid").innerHTML = `<p style="grid-column:1/-1;text-align:center">${ex.message}</p>`;
+    });
+  </script>
+</body>
+</html>

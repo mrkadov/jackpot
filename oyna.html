@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oyna | Jackpot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="page-wrap">
+    <nav class="menu_head">
+      <div class="container nav-inner">
+        <a class="brand" href="index.html">
+          <span class="brand-cards" aria-hidden="true">🂡🂱🃁🃑</span>
+          <span class="brand-name">Jackpot</span>
+        </a>
+        <button class="nav-toggle" aria-label="Menü">☰</button>
+        <div class="nav-links">
+          <a href="index.html">Ana Sayfa</a>
+          <a href="games.html" class="active">Oyunlar</a>
+          <a href="hesabim.html">Hesabım</a>
+          <a href="kasa.html">Kasa</a>
+        </div>
+        <div class="nav-actions"></div>
+      </div>
+    </nav>
+
+    <header class="page-hero" style="padding-bottom:1rem">
+      <div class="container">
+        <h1 id="gameTitle">Oyun yükleniyor...</h1>
+        <p id="gameMeta"></p>
+        <a class="btn btn-ghost" href="games.html">← Lobye Dön</a>
+      </div>
+    </header>
+
+    <section class="content-section">
+      <div class="container">
+        <div id="playFrameWrap" class="play-frame card-panel">
+          <p id="playStatus">Oturum açılıyor...</p>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/nav.js"></script>
+  <script>
+    (async function () {
+      if (!JackpotAPI.requireAuthPage()) return;
+      const params = new URLSearchParams(location.search);
+      const id = params.get("id");
+      if (!id) {
+        document.getElementById("playStatus").textContent = "Oyun seçilmedi.";
+        return;
+      }
+      try {
+        const data = await JackpotAPI.api(`/games/${id}/launch`, { method: "POST" });
+        document.getElementById("gameTitle").textContent = data.game.name;
+        document.getElementById("gameMeta").textContent =
+          `${data.game.provider} · ${data.game.category}`;
+        const wrap = document.getElementById("playFrameWrap");
+        const tok = JackpotAPI.getToken();
+        let launch = data.launchUrl;
+        if (tok) {
+          const u = new URL(launch, window.location.origin);
+          u.searchParams.set("token", tok);
+          launch = u.pathname + u.search;
+        }
+        wrap.innerHTML = `<iframe src="${launch}" title="${data.game.name}" allowfullscreen loading="lazy"></iframe>`;
+
+        window.addEventListener("message", async (ev) => {
+          if (ev.origin !== window.location.origin) return;
+          if (ev.data?.type === "jackpot-balance") {
+            try {
+              const me = await JackpotAPI.api("/auth/me");
+              if (typeof ev.data.balance === "number" && me.user?.wallet) {
+                me.user.wallet.balance = ev.data.balance;
+              }
+              JackpotAPI.setAuth(JackpotAPI.getToken(), me.user);
+              const nav = document.querySelector(".nav-actions");
+              if (nav && me.user?.wallet) {
+                const bal = JackpotAPI.money(me.user.wallet.balance);
+                const link = nav.querySelector('a[href="hesabim.html"]');
+                if (link) link.textContent = `${me.user.name} · ${bal}`;
+              }
+            } catch (_) {}
+          }
+        });
+      } catch (ex) {
+        document.getElementById("playStatus").textContent = ex.message;
+      }
+    })();
+  </script>
+</body>
+</html>

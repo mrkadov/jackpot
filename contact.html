@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>İletişim | Jackpot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="page-wrap">
+    <nav class="menu_head">
+      <div class="container nav-inner">
+        <a class="brand" href="index.html"><span class="brand-cards">🂡🂱🃁🃑</span><span class="brand-name">Jackpot</span></a>
+        <button class="nav-toggle" aria-label="Menü">☰</button>
+        <div class="nav-links">
+          <a href="index.html">Ana Sayfa</a>
+          <a href="about.html">Hakkımızda</a>
+          <a href="promotion.html">Promosyon</a>
+          <a href="games.html">Oyunlar</a>
+          <a href="membership.html">Üyelik</a>
+          <a class="active" href="contact.html">İletişim</a>
+        </div>
+        <div class="nav-actions"></div>
+      </div>
+    </nav>
+    <header class="page-hero"><div class="container"><h1>İletişim</h1><p>Bonus, ödeme veya üyelik soruların için yaz.</p></div></header>
+    <section class="content-section">
+      <div class="container">
+        <form class="card-panel contact-form auth-box reveal" id="contactForm">
+          <label for="name">Ad Soyad</label>
+          <input id="name" type="text" required />
+          <label for="email">E-posta</label>
+          <input id="email" type="email" required />
+          <label for="message">Mesaj</label>
+          <textarea id="message" rows="5" required></textarea>
+          <button class="btn btn-lg" type="submit" style="width:100%">Gönder</button>
+          <p id="formError" class="form-msg"></p>
+        </form>
+      </div>
+    </section>
+    <footer id="footer_part"><div class="container copyright">© 2026 Jackpot</div></footer>
+  </div>
+  <script src="js/api.js"></script><script src="js/main.js"></script><script src="js/nav.js"></script>
+  <script>
+    document.getElementById("contactForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      document.getElementById("formError").textContent = "Mesajınız alındı (demo).";
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>

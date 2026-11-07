@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hesabım | Jackpot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="page-wrap">
+    <nav class="menu_head">
+      <div class="container nav-inner">
+        <a class="brand" href="index.html">
+          <span class="brand-cards" aria-hidden="true">🂡🂱🃁🃑</span>
+          <span class="brand-name">Jackpot</span>
+        </a>
+        <button class="nav-toggle" aria-label="Menü">☰</button>
+        <div class="nav-links">
+          <a href="index.html">Ana Sayfa</a>
+          <a href="about.html">Hakkımızda</a>
+          <a href="promotion.html">Promosyon</a>
+          <a href="games.html">Oyunlar</a>
+          <a href="membership.html">Üyelik</a>
+          <a href="contact.html">İletişim</a>
+        </div>
+        <div class="nav-actions"></div>
+      </div>
+    </nav>
+
+    <header class="page-hero">
+      <div class="container">
+        <h1>Hesabım</h1>
+        <p>Bakiye, işlemler ve hesap özeti</p>
+      </div>
+    </header>
+
+    <section class="content-section">
+      <div class="container account-grid">
+        <div class="card-panel reveal" id="profileCard">Yükleniyor...</div>
+        <div class="card-panel reveal">
+          <h3 style="color:var(--gold);margin-bottom:1rem">Son İşlemler</h3>
+          <div class="table-wrap"><table id="txTable"><tbody><tr><td>Yükleniyor...</td></tr></tbody></table></div>
+        </div>
+      </div>
+    </section>
+
+    <footer id="footer_part">
+      <div class="container copyright">© 2026 Jackpot. Tüm hakları saklıdır. · <a href="index.html">Ana Sayfa</a></div>
+    </footer>
+  </div>
+  <button class="to-top" aria-label="Yukarı">↑</button>
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/livechat.js"></script>
+  <script>
+    (async function () {
+      if (!JackpotAPI.requireAuthPage()) return;
+      const { api, money } = JackpotAPI;
+      try {
+        const [{ user }, { transactions }] = await Promise.all([
+          api("/auth/me"),
+          api("/wallet/transactions"),
+        ]);
+        document.getElementById("profileCard").innerHTML = `
+          <h3 style="color:var(--gold);margin-bottom:0.75rem">${user.name}</h3>
+          <p style="color:var(--text-muted)">${user.email}</p>
+          <div class="profile-meta">
+            <div>TC: <strong>${user.tcKimlik || "-"}</strong></div>
+            <div>Telefon: <strong>${user.phone || "-"}</strong></div>
+            <div>Doğum: <strong>${user.birthDate || "-"}</strong></div>
+            <div>VIP: <strong>${user.vipLevel || "BRONZE"}</strong> · KYC: <strong>${user.kycStatus || "NONE"}</strong></div>
+            <div>Adres: <strong>${[user.address, user.district, user.city, user.postalCode].filter(Boolean).join(", ") || "-"}</strong></div>
+          </div>
+          <div class="balance-row"><span>Ana Bakiye</span><strong>${money(user.wallet.balance)}</strong></div>
+          <div class="balance-row"><span>Bonus</span><strong>${money(user.wallet.bonusBalance)}</strong></div>
+          <div class="balance-row"><span>Çekilebilir</span><strong>${money(user.wallet.withdrawable)}</strong></div>
+          <div style="margin-top:1.25rem;display:flex;gap:0.6rem;flex-wrap:wrap">
+            <a class="btn" href="kasa.html">Kasa</a>
+            <a class="btn" href="kyc.html">KYC Doğrula</a>
+            <a class="btn btn-ghost" href="games.html">Oyunlara Git</a>
+          </div>
+          <div id="bonusBox" style="margin-top:1rem"></div>`;
+        const typeTr = { DEPOSIT: "Yatırım", WITHDRAW: "Çekim", ADJUST: "Düzeltme", BET: "Bahis", WIN: "Kazanç" };
+        try {
+          const { bonuses } = await api("/player/bonuses");
+          document.getElementById("bonusBox").innerHTML = `<h4 style="color:var(--gold);margin:0.5rem 0">Bonuslarım</h4>` +
+            (bonuses.length
+              ? `<ul style="color:var(--text-muted);font-size:0.9rem">${bonuses.slice(0,5).map(b => `<li>${b.name}: ${money(b.amount)} · çevrim ${b.wagerProgress}/${b.wagerRequired}</li>`).join("")}</ul>`
+              : `<p style="color:var(--text-muted);font-size:0.9rem">Aktif bonus yok</p>`);
+        } catch (_) {}
+        document.getElementById("txTable").innerHTML = `
+          <thead><tr><th>Tip</th><th>Tutar</th><th>Sonra</th><th>Not</th><th>Tarih</th></tr></thead>
+          <tbody>${
+            transactions.length
+              ? transactions
+                  .map(
+                    (t) => `<tr>
+                    <td>${typeTr[t.type] || t.type}</td>
+                    <td>${money(t.amount)}</td>
+                    <td>${money(t.balanceAfter)}</td>
+                    <td>${t.note || "-"}</td>
+                    <td>${new Date(t.createdAt).toLocaleString("tr-TR")}</td>
+                  </tr>`
+                  )
+                  .join("")
+              : "<tr><td colspan='5'>Henüz işlem yok</td></tr>"
+          }</tbody>`;
+      } catch (ex) {
+        document.getElementById("profileCard").textContent = ex.message;
+      }
+    })();
+  </script>
+</body>
+</html>
