@@ -1,7 +1,7 @@
 (() => {
   const TOKEN_KEY = "jackpot_token";
   const BETS = [1, 2, 5, 10];
-  const ICONS = ["❓", "🍒", "🍋", "🍊", "🍇", "🔔", "⭐", "7️⃣", "💎", "🃏", "🐬", "📜", "👑", "🔥", "🍀", "🧿", "🌙", "⚡", "🪙", "🦋"];
+  const Sym = window.SlotopolSymbols;
 
   const params = new URLSearchParams(location.search);
   const alias = (params.get("alias") || "novomatic/jokerdolphin").toLowerCase();
@@ -17,6 +17,7 @@
   const els = {
     title: document.getElementById("title"),
     subtitle: document.getElementById("subtitle"),
+    machine: document.querySelector(".machine"),
     reels: document.getElementById("reels"),
     balance: document.getElementById("balance"),
     betLabel: document.getElementById("betLabel"),
@@ -56,15 +57,23 @@
     return data;
   }
 
-  function icon(id) {
-    return ICONS[id] || ICONS[id % ICONS.length] || "•";
-  }
-
   function money(n) {
     return Number(n || 0).toLocaleString("tr-TR", {
       minimumFractionDigits: 0,
       maximumFractionDigits: 2,
     });
+  }
+
+  function paintCell(cell, id) {
+    const s = Sym.get(state.alias, id);
+    cell.className = `cell tier-${s.c}`;
+    cell.innerHTML = `<span class="glyph">${s.g}</span><span class="label">${s.n}</span>`;
+    cell.dataset.sym = String(id);
+  }
+
+  function applySkin() {
+    const theme = Sym.resolve(state.alias);
+    els.machine.dataset.skin = theme.skin;
   }
 
   function ui() {
@@ -98,8 +107,7 @@
       win.className = "reel-window";
       for (let r = 0; r < rows; r++) {
         const cell = document.createElement("div");
-        cell.className = "cell";
-        cell.textContent = ICONS[1 + ((c + r) % 8)];
+        paintCell(cell, Sym.randomId(state.alias));
         win.appendChild(cell);
       }
       reel.appendChild(win);
@@ -116,7 +124,7 @@
       const cells = els.reels.children[c]?.querySelectorAll(".cell");
       if (!cells) continue;
       for (let r = 0; r < rows; r++) {
-        if (cells[r]) cells[r].textContent = icon(grid[c][r]);
+        if (cells[r]) paintCell(cells[r], grid[c][r]);
       }
     }
   }
@@ -147,15 +155,11 @@
             const cells = reel.querySelectorAll(".cell");
             let ticks = 8 + i * 2;
             const timer = setInterval(() => {
-              cells.forEach((c) => {
-                c.textContent = ICONS[1 + Math.floor(Math.random() * 12)];
-              });
+              cells.forEach((c) => paintCell(c, Sym.randomId(state.alias)));
               ticks -= 1;
               if (ticks <= 0) {
                 clearInterval(timer);
-                cells.forEach((c, row) => {
-                  c.textContent = icon(grid?.[i]?.[row] || 1);
-                });
+                cells.forEach((c, row) => paintCell(c, grid?.[i]?.[row] || 1));
                 reel.classList.remove("spinning");
                 resolve();
               }
@@ -218,6 +222,7 @@
   }
 
   async function boot() {
+    applySkin();
     buildReels();
     ui();
     if (!token()) {
