@@ -81,6 +81,80 @@ async function main() {
     }
   }
 
+  // Slotopol-backed demo games (math engine on :8080)
+  const slotopolGames = [
+    {
+      providerName: "Novomatic",
+      name: "Joker Dolphin",
+      alias: "novomatic/jokerdolphin",
+      rtp: 96.0,
+      popular: true,
+      featured: true,
+    },
+    {
+      providerName: "Novomatic",
+      name: "Book of Ra",
+      alias: "novomatic/bookofra",
+      rtp: 95.1,
+      popular: true,
+    },
+    {
+      providerName: "Novomatic",
+      name: "Book of Ra Deluxe",
+      alias: "novomatic/bookofradeluxe",
+      rtp: 95.0,
+      featured: true,
+    },
+    {
+      providerName: "NetEnt",
+      name: "Tiki Wonders",
+      alias: "netent/tikiwonders",
+      rtp: 96.0,
+      popular: true,
+    },
+    {
+      providerName: "AGT",
+      name: "Sun City",
+      alias: "agt/suncity",
+      rtp: 95.5,
+    },
+  ];
+  for (const g of slotopolGames) {
+    const provider = await prisma.gameProvider.upsert({
+      where: { name: g.providerName },
+      update: { active: true },
+      create: { name: g.providerName, active: true },
+    });
+    const launchUrl = `/games/slotopol-player/index.html?alias=${encodeURIComponent(g.alias)}`;
+    const exists = await prisma.game.findFirst({ where: { name: g.name, providerId: provider.id } });
+    if (!exists) {
+      await prisma.game.create({
+        data: {
+          name: g.name,
+          category: "Slot",
+          launchUrl,
+          providerId: provider.id,
+          active: true,
+          popular: Boolean(g.popular),
+          featured: Boolean(g.featured),
+          tags: JSON.stringify(["slotopol", "demo"]),
+          rtp: g.rtp,
+        },
+      });
+    } else {
+      await prisma.game.update({
+        where: { id: exists.id },
+        data: {
+          launchUrl,
+          active: true,
+          popular: Boolean(g.popular),
+          featured: Boolean(g.featured),
+          rtp: g.rtp,
+        },
+      });
+    }
+  }
+
   const methods = [
     { code: "HAVALE", name: "Havale/EFT", type: "LOCAL", minAmount: 50, maxAmount: 250000 },
     { code: "PAPARA", name: "Papara", type: "LOCAL", minAmount: 50, maxAmount: 100000 },

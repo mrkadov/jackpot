@@ -10,6 +10,7 @@ const paymentsRoutes = require("./routes/payments");
 const adminRoutes = require("./routes/admin");
 const playerRoutes = require("./routes/player");
 const lucky7Routes = require("./routes/lucky7");
+const slotopolRoutes = require("./routes/slotopol");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -39,6 +40,7 @@ app.use("/api/games", gamesRoutes);
 app.use("/api/payments", paymentsRoutes);
 app.use("/api/player", playerRoutes);
 app.use("/api/games/lucky7", lucky7Routes);
+app.use("/api/slotopol", slotopolRoutes);
 app.use("/api/admin", adminRoutes);
 
 app.use(express.static(rootDir));

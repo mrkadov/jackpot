@@ -1,5 +1,10 @@
 node_modules/
 server/node_modules/
+server-main/
+tools/slotopol/
+tools/slotopol/**/*.zip
+tools/slotopol/**/*.exe
+tools/slotopol/**/sqlite/
 server/dev.db
 server/dev.db-journal
 server/prisma/*.db

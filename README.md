@@ -14,6 +14,16 @@ npm start
 
 Tarayıcı: http://localhost:3000
 
+## Slotopol motor (ek slotlar)
+
+`server-main` = [Slotopol](https://github.com/slotopol/server) kaynakları. Çalıştırmak için:
+
+```bat
+tools\start-slotopol.cmd
+```
+
+Jackpot API (`:3000`) spin’leri Slotopol’e (`:8080`) iletir; bakiye Jackpot cüzdanından düşülür/eklenir. Lobide: Joker Dolphin, Book of Ra, Book of Ra Deluxe, Tiki Wonders, Sun City.
+
 ## Canlıya alma (Render)
 
 Netlify / sadece-static hosting **çalışmaz**. Node sunucu gerekir.

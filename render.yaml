@@ -20,6 +20,9 @@ services:
         sync: false
       - key: ADMIN_PASSWORD
         sync: false
+      # Slotopol ayrı çalışıyorsa public URL yaz (ör. https://slotopol-xxxx.onrender.com)
+      - key: SLOTOPOL_URL
+        sync: false
     disk:
       name: jackpot-data
       mountPath: /var/data
